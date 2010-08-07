@@ -1,0 +1,73 @@
+Created by PLY version 3.3 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> statement
+Rule 1     statement -> KARMABOT THING
+Rule 2     statement -> KARMABOT THING +
+Rule 3     statement -> KARMABOT THING -
+
+Terminals, with rules where they appear
+
++                    : 2
+-                    : 3
+KARMABOT             : 1 2 3
+THING                : 1 2 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+statement            : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (1) statement -> . KARMABOT THING
+    (2) statement -> . KARMABOT THING +
+    (3) statement -> . KARMABOT THING -
+
+    KARMABOT        shift and go to state 2
+
+    statement                      shift and go to state 1
+
+state 1
+
+    (0) S' -> statement .
+
+
+
+state 2
+
+    (1) statement -> KARMABOT . THING
+    (2) statement -> KARMABOT . THING +
+    (3) statement -> KARMABOT . THING -
+
+    THING           shift and go to state 3
+
+
+state 3
+
+    (1) statement -> KARMABOT THING .
+    (2) statement -> KARMABOT THING . +
+    (3) statement -> KARMABOT THING . -
+
+    $end            reduce using rule 1 (statement -> KARMABOT THING .)
+    +               shift and go to state 4
+    -               shift and go to state 5
+
+
+state 4
+
+    (2) statement -> KARMABOT THING + .
+
+    $end            reduce using rule 2 (statement -> KARMABOT THING + .)
+
+
+state 5
+
+    (3) statement -> KARMABOT THING - .
+
+    $end            reduce using rule 3 (statement -> KARMABOT THING - .)
+

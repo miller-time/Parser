@@ -3,20 +3,23 @@ Created by PLY version 3.3 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> statement
-Rule 1     statement -> KARMABOT THING
-Rule 2     statement -> KARMABOT THING +
-Rule 3     statement -> KARMABOT THING -
+Rule 1     statement -> expression
+Rule 2     statement -> KARMABOT COLON THING PLUS PLUS
+Rule 3     statement -> KARMABOT COLON THING MINUS MINUS
+Rule 4     expression -> KARMABOT COLON THING
 
 Terminals, with rules where they appear
 
-+                    : 2
--                    : 3
-KARMABOT             : 1 2 3
-THING                : 1 2 3
+COLON                : 2 3 4
+KARMABOT             : 2 3 4
+MINUS                : 3 3
+PLUS                 : 2 2
+THING                : 2 3 4
 error                : 
 
 Nonterminals, with rules where they appear
 
+expression           : 1
 statement            : 0
 
 Parsing method: LALR
@@ -24,12 +27,14 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . statement
-    (1) statement -> . KARMABOT THING
-    (2) statement -> . KARMABOT THING +
-    (3) statement -> . KARMABOT THING -
+    (1) statement -> . expression
+    (2) statement -> . KARMABOT COLON THING PLUS PLUS
+    (3) statement -> . KARMABOT COLON THING MINUS MINUS
+    (4) expression -> . KARMABOT COLON THING
 
     KARMABOT        shift and go to state 2
 
+    expression                     shift and go to state 3
     statement                      shift and go to state 1
 
 state 1
@@ -40,34 +45,64 @@ state 1
 
 state 2
 
-    (1) statement -> KARMABOT . THING
-    (2) statement -> KARMABOT . THING +
-    (3) statement -> KARMABOT . THING -
+    (2) statement -> KARMABOT . COLON THING PLUS PLUS
+    (3) statement -> KARMABOT . COLON THING MINUS MINUS
+    (4) expression -> KARMABOT . COLON THING
 
-    THING           shift and go to state 3
+    COLON           shift and go to state 4
 
 
 state 3
 
-    (1) statement -> KARMABOT THING .
-    (2) statement -> KARMABOT THING . +
-    (3) statement -> KARMABOT THING . -
+    (1) statement -> expression .
 
-    $end            reduce using rule 1 (statement -> KARMABOT THING .)
-    +               shift and go to state 4
-    -               shift and go to state 5
+    $end            reduce using rule 1 (statement -> expression .)
 
 
 state 4
 
-    (2) statement -> KARMABOT THING + .
+    (2) statement -> KARMABOT COLON . THING PLUS PLUS
+    (3) statement -> KARMABOT COLON . THING MINUS MINUS
+    (4) expression -> KARMABOT COLON . THING
 
-    $end            reduce using rule 2 (statement -> KARMABOT THING + .)
+    THING           shift and go to state 5
 
 
 state 5
 
-    (3) statement -> KARMABOT THING - .
+    (2) statement -> KARMABOT COLON THING . PLUS PLUS
+    (3) statement -> KARMABOT COLON THING . MINUS MINUS
+    (4) expression -> KARMABOT COLON THING .
 
-    $end            reduce using rule 3 (statement -> KARMABOT THING - .)
+    PLUS            shift and go to state 6
+    MINUS           shift and go to state 7
+    $end            reduce using rule 4 (expression -> KARMABOT COLON THING .)
+
+
+state 6
+
+    (2) statement -> KARMABOT COLON THING PLUS . PLUS
+
+    PLUS            shift and go to state 8
+
+
+state 7
+
+    (3) statement -> KARMABOT COLON THING MINUS . MINUS
+
+    MINUS           shift and go to state 9
+
+
+state 8
+
+    (2) statement -> KARMABOT COLON THING PLUS PLUS .
+
+    $end            reduce using rule 2 (statement -> KARMABOT COLON THING PLUS PLUS .)
+
+
+state 9
+
+    (3) statement -> KARMABOT COLON THING MINUS MINUS .
+
+    $end            reduce using rule 3 (statement -> KARMABOT COLON THING MINUS MINUS .)
 

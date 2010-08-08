@@ -5,9 +5,9 @@ _tabversion = '3.2'
 
 _lr_method = 'LALR'
 
-_lr_signature = '\xa0\x85\x9b\xd4t\xb4*?\x1d>\xf0\x11\xe2\x07\xc2\x15'
+_lr_signature = '\xa5\xc7\xfa\xe4\xefs*N\xdeo\x83 3\x0f\xed\xc2'
     
-_lr_action_items = {'THING':([2,],[3,]),'+':([3,],[4,]),'$end':([1,3,4,5,],[0,-1,-2,-3,]),'-':([3,],[5,]),'KARMABOT':([0,],[2,]),}
+_lr_action_items = {'THING':([4,],[5,]),'PLUS':([5,6,],[6,8,]),'KARMABOT':([0,],[2,]),'COLON':([2,],[4,]),'MINUS':([5,7,],[7,9,]),'$end':([1,3,5,8,9,],[0,-1,-4,-2,-3,]),}
 
 _lr_action = { }
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),}
+_lr_goto_items = {'expression':([0,],[3,]),'statement':([0,],[1,]),}
 
 _lr_goto = { }
 for _k, _v in _lr_goto_items.items():
@@ -26,7 +26,8 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> KARMABOT THING','statement',2,'p_statement_expr','karmaparse.py',36),
-  ('statement -> KARMABOT THING +','statement',3,'p_statement_up','karmaparse.py',42),
-  ('statement -> KARMABOT THING -','statement',3,'p_statement_down','karmaparse.py',49),
+  ('statement -> expression','statement',1,'p_statement_expr','karmaparse.py',48),
+  ('statement -> KARMABOT COLON THING PLUS PLUS','statement',5,'p_statement_up','karmaparse.py',55),
+  ('statement -> KARMABOT COLON THING MINUS MINUS','statement',5,'p_statement_down','karmaparse.py',63),
+  ('expression -> KARMABOT COLON THING','expression',3,'p_expression_thing','karmaparse.py',71),
 ]

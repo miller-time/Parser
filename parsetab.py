@@ -5,9 +5,9 @@ _tabversion = '3.2'
 
 _lr_method = 'LALR'
 
-_lr_signature = '\xa5\xc7\xfa\xe4\xefs*N\xdeo\x83 3\x0f\xed\xc2'
+_lr_signature = '\xd6\xa6(O\xd3\xf1\x04\xd4\x03M"`\xf6iP\x0b'
     
-_lr_action_items = {'THING':([4,],[5,]),'PLUS':([5,6,],[6,8,]),'KARMABOT':([0,],[2,]),'COLON':([2,],[4,]),'MINUS':([5,7,],[7,9,]),'$end':([1,3,5,8,9,],[0,-1,-4,-2,-3,]),}
+_lr_action_items = {'THING':([0,8,],[3,10,]),'PLUS':([10,11,],[11,12,]),'KARMABOT':([0,],[5,]),'COLON':([5,],[8,]),'MINUS':([3,7,],[7,9,]),'$end':([1,2,4,6,9,10,12,],[-3,-4,0,-1,-6,-2,-5,]),}
 
 _lr_action = { }
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,],[3,]),'statement':([0,],[1,]),}
+_lr_goto_items = {'down':([0,],[2,]),'expression':([0,],[6,]),'up':([0,],[1,]),'statement':([0,],[4,]),}
 
 _lr_goto = { }
 for _k, _v in _lr_goto_items.items():
@@ -26,8 +26,10 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expression','statement',1,'p_statement_expr','karmaparse.py',48),
-  ('statement -> KARMABOT COLON THING PLUS PLUS','statement',5,'p_statement_up','karmaparse.py',55),
-  ('statement -> KARMABOT COLON THING MINUS MINUS','statement',5,'p_statement_down','karmaparse.py',63),
-  ('expression -> KARMABOT COLON THING','expression',3,'p_expression_thing','karmaparse.py',71),
+  ('statement -> expression','statement',1,'p_statement','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',14),
+  ('expression -> KARMABOT COLON THING','expression',3,'p_expression','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',22),
+  ('expression -> up','expression',1,'p_expression','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',23),
+  ('expression -> down','expression',1,'p_expression','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',24),
+  ('down -> KARMABOT COLON THING PLUS PLUS','down',5,'p_up','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',30),
+  ('up -> THING MINUS MINUS','up',3,'p_down','/Users/dcolish/workspace/karmaparse/karmaparse/gram.py',39),
 ]

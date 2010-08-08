@@ -16,7 +16,8 @@ def do_parse(s):
 
 if __name__ == '__main__':
 
-    s = ("""karmabot: millertime """,
-         )
+    s = (
+        """karmabot: millertime """,
+        )
     for x in s:
         do_parse(x)

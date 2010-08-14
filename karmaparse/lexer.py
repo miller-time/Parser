@@ -30,7 +30,7 @@ t_MINUS = r'-'
 
 t_COLON = r':'
 
-t_ignore = " \t"
+t_ignore = " !.?\t"
 
 
 def t_error(t):
@@ -43,8 +43,9 @@ if __name__ == '__main__':
 
     # A little unit test for the lexer
     s = ("""karmabot: millertime """,
-         )
+         """millertime++""" )
     lex.input(s[0])
+    lex.input(s[1])
 
     while True:
         tok = lex.token()

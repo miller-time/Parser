@@ -20,31 +20,36 @@ def p_statement(p):
 
 def p_expression(p):
     """expression : KARMABOT COLON THING
+    		  | KARMABOT THING
                   | up
                   | down
                   """
     if len(p) == 4:
-        p[0] = things.get(p[3], ' '.join((p[3], '(0)')))
+        num = things.get(p[3], 0)
+	p[0] = p[3]+'('+str(num)+')'
+    elif len(p) == 3:
+        num = things.get(p[2], 0)
+	p[0] = p[2]+'('+str(num)+')'
     else:
         p[0] = p[1]
 
 
 def p_up(p):
     '''up : THING PLUS PLUS'''
-    p[0] = ''.join([p[1], '+', '+'])
-    #  if p[2] not in things:
-    #    things[p[2]] = 1
-    #  else:
-    #    things[p[2]] += 1
+    if p[1] not in things:
+      things[p[1]] = 1
+    else:
+      things[p[1]] += 1
+    p[0] = 'Done'
 
 
 def p_down(p):
     '''down : THING MINUS MINUS'''
-    p[0] = ''.join([p[1], '-', '-'])
-    #  if [p[2]] not in things:
-    #    things[p[2]] = -1
-    #  else:
-    #    things[p[2]] += -1
+    if p[1] not in things:
+      things[p[1]] = -1
+    else:
+      things[p[1]] += -1
+    p[0] = 'Done'
 
 
 def p_error(p):
@@ -59,7 +64,7 @@ parser = yacc.yacc(debug=True)
 
 if __name__ == '__main__':
     import readline
-    if sys.version_info.major >= 3:
+    if sys.version_info[0] >= 3:
         raw_input = input
 
     while 1:

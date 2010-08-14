@@ -2,3 +2,16 @@ karmaparse.py
 
 This is a testing environment to see how I can interact with karmabot
 using PLY
+
+
+To use:
+1.   cd karmaparse
+2.   python gram.py
+
+Available commands:
+thing++
+thing--
+karmabot: thing
+karmabot thing
+
+("thing" = any string)

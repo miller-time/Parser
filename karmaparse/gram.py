@@ -13,25 +13,26 @@ things = {}
 def p_statement(p):
     '''statement : expression'''
     p[0] = p[1]
-    #  if p[2] not in things:
-    #    things[p[2]] = 0
-    #  print '%s : %d' % (p[2],things[p[2]])
 
 
 def p_expression(p):
     """expression : KARMABOT COLON THING
-    		  | KARMABOT THING
+                  | KARMABOT COLON THING IS DESCRIPTION
                   | up
                   | down
                   """
+    if len(p) > 4 and p[4] == "is":
+      print 'So you want',p[2],' to be described as:'
+      print ' '.join(p[5:])
+      print 'Right?'
     if len(p) == 4:
-        num = things.get(p[3], 0)
-	p[0] = p[3]+'('+str(num)+')'
-    elif len(p) == 3:
-        num = things.get(p[2], 0)
-	p[0] = p[2]+'('+str(num)+')'
+      num = things.get(p[3], 0)
+      p[0] = p[3]+'('+str(num)+')'
+#    elif len(p) == 3:
+#      num = things.get(p[2], 0)
+#      p[0] = p[2]+'('+str(num)+')'
     else:
-        p[0] = p[1]
+      p[0] = p[1]
 
 
 def p_up(p):

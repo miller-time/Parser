@@ -8,10 +8,12 @@ from ply import lex
 
 reserved = {
     'karmabot': 'KARMABOT',
+    'is': 'IS',
     }
 
 tokens = (
   'THING',
+  'DESCRIPTION',
   'PLUS',
   'MINUS',
   'COLON',
@@ -24,13 +26,18 @@ def t_THING(t):
     t.type = reserved.get(t.value, 'THING')    # Check for reserved words
     return t
 
+def t_DESCRIPTION(t):
+    r'[a-zA-Z_][a-zA-Z0-9 _]*'
+    t.type = reserved.get(t.value, 'DESCRIPTION')
+    return t
+
 t_PLUS = r'\+'
 
 t_MINUS = r'-'
 
 t_COLON = r':'
 
-t_ignore = " !.?\t"
+t_ignore = " \t"
 
 
 def t_error(t):
@@ -43,9 +50,8 @@ if __name__ == '__main__':
 
     # A little unit test for the lexer
     s = ("""karmabot: millertime """,
-         """millertime++""" )
+         )
     lex.input(s[0])
-    lex.input(s[1])
 
     while True:
         tok = lex.token()

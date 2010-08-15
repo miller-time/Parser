@@ -17,15 +17,15 @@ def p_statement(p):
 
 def p_expression(p):
     """expression : KARMABOT COLON THING
-                  | KARMABOT COLON THING IS DESCRIPTION
+                  | KARMABOT COLON THING IS thinglist
                   | up
                   | down
                   """
     if len(p) > 4 and p[4] == "is":
-      print 'So you want',p[2],' to be described as:'
-      print ' '.join(p[5:])
+      print 'So you want',p[3],' to be described as:'
+      print ' '.join(p[5])
       print 'Right?'
-    if len(p) == 4:
+    elif len(p) == 4:
       num = things.get(p[3], 0)
       p[0] = p[3]+'('+str(num)+')'
 #    elif len(p) == 3:
@@ -51,6 +51,12 @@ def p_down(p):
     else:
       things[p[1]] += -1
     p[0] = 'Done'
+
+
+def p_thinglist(p):
+    """thinglist : THING thinglist 
+                 | THING"""
+    p[0] = [p[1], p[2]]
 
 
 def p_error(p):

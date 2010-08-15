@@ -13,7 +13,6 @@ reserved = {
 
 tokens = (
   'THING',
-  'DESCRIPTION',
   'PLUS',
   'MINUS',
   'COLON',
@@ -26,10 +25,6 @@ def t_THING(t):
     t.type = reserved.get(t.value, 'THING')    # Check for reserved words
     return t
 
-def t_DESCRIPTION(t):
-    r'[a-zA-Z_][a-zA-Z0-9 _]*'
-    t.type = reserved.get(t.value, 'DESCRIPTION')
-    return t
 
 t_PLUS = r'\+'
 

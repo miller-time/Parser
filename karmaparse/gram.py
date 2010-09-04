@@ -22,15 +22,12 @@ def p_expression(p):
                   | down
                   """
     if len(p) > 4 and p[4] == "is":
-      print 'So you want',p[3],' to be described as:'
+      print 'So you want',p[3],'to be described as:'
       print ' '.join(p[5])
-      print 'Right?'
+      p[0] = 'Right?'
     elif len(p) == 4:
       num = things.get(p[3], 0)
       p[0] = p[3]+'('+str(num)+')'
-#    elif len(p) == 3:
-#      num = things.get(p[2], 0)
-#      p[0] = p[2]+'('+str(num)+')'
     else:
       p[0] = p[1]
 
@@ -56,7 +53,10 @@ def p_down(p):
 def p_thinglist(p):
     """thinglist : THING thinglist 
                  | THING"""
-    p[0] = [p[1], p[2]]
+    if len(p)<3:
+        p[0] = [p[1],]
+    else:
+        p[0] = [p[1],] + p[2]
 
 
 def p_error(p):

@@ -1,17 +1,44 @@
 karmaparse.py
 
 This is a testing environment to see how I can interact with karmabot
-using PLY
+using PLY. It gives you an irc-like prompt where you can talk to karmabot and it
+responds as expected.
 
+*******
+To use
+*******
 
-To use:
-1.   cd karmaparse
-2.   python gram.py
+[requires python, ply]
+
+I recommend checking out virtualenv. By installing that, you can run the
+command:
+
+    virtualenv ENV
+
+followed by:
+
+    source ENV/bin/activate
+
+and you've got your own environment you can run setup.py in. That being said,
+the next step is to run:
+
+    python setup.py develop
+
+which should install any dependencies you need. Now you're ready!
+Change to the parser directory:
+
+    cd karmaparse
+
+And launch the test prompt:
+
+    python gram.py
 
 Available commands:
-thing++
-thing--
-karmabot: thing
-karmabot thing
-
-("thing" = any string)
+    thing++
+        add 1 karma to "thing"
+    thing-- 
+        subtract 1 karma from "thing"
+    karmabot: thing 
+        see current karma and description of "thing"
+    karmabot: thing is this and that 
+        add "this and that" to "thing"'s "description"

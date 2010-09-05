@@ -9,6 +9,12 @@ __all__ = ['tokens', 'parser']
 
 things = {}
 descriptions = {}
+helptext = ["Usage:",
+            "karmabot: help",
+            "karmabot: <thing>",
+            "karmabot: <thing> is <description>",
+            "<thing>++",
+            "<thing>--"]
 
 
 def p_statement(p):
@@ -17,12 +23,15 @@ def p_statement(p):
 
 
 def p_expression(p):
-    """expression : KARMABOT COLON THING
+    """expression : KARMABOT COLON HELP
+                  | KARMABOT COLON THING
                   | KARMABOT COLON THING IS thinglist
                   | up
                   | down
                   """
-    if len(p) > 4 and p[4] == "is":
+    if len(p) >= 3 and p[3] == "help":
+        p[0] = '\n'.join(helptext)
+    elif len(p) > 4 and p[4] == "is":
         result = ' '.join(p[5])
         if p[3] not in descriptions:
             descriptions[p[3]] = result
@@ -70,7 +79,7 @@ def p_error(p):
     if p:
         print("Syntax error at %r, %s ") % (p.value, p)
     else:
-        print("Syntax error at EOF")
+        print("Syntax error at EOF - for help try 'karmabot: help'")
 
 
 parser = yacc.yacc(debug=True)

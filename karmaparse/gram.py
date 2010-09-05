@@ -9,12 +9,7 @@ __all__ = ['tokens', 'parser']
 
 things = {}
 descriptions = {}
-helptext = ["Usage:",
-            "karmabot: help",
-            "karmabot: <thing>",
-            "karmabot: <thing> is <description>",
-            "<thing>++",
-            "<thing>--"]
+helptext = "Usage: karmabot: help, karmabot: <thing>, karmabot: <thing> is <description>, <thing>++, <thing>--"
 
 
 def p_statement(p):
@@ -30,7 +25,7 @@ def p_expression(p):
                   | down
                   """
     if len(p) >= 3 and p[3] == "help":
-        p[0] = '\n'.join(helptext)
+        p[0] = helptext
     elif len(p) > 4 and p[4] == "is":
         result = ' '.join(p[5])
         if p[3] not in descriptions:

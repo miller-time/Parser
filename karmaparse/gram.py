@@ -9,7 +9,12 @@ __all__ = ['tokens', 'parser']
 
 things = {}
 descriptions = {}
-helptext = "Usage: karmabot: help, karmabot: <thing>, karmabot: <thing> is <description>, <thing>++, <thing>--"
+helptext = ', '.join(("Usage: karmabot: help",
+                      "karmabot: <thing>",
+                      "karmabot: <thing> is <description>",
+                      "<thing>++",
+                      "<thing>--",
+                      ))
 
 
 def p_statement(p):
@@ -24,50 +29,38 @@ def p_expression(p):
                   | up
                   | down
                   """
-    if len(p) >= 3 and p[3] == "help":
-        p[0] = helptext
-    elif len(p) > 4 and p[4] == "is":
-        result = ' '.join(p[5])
-        if p[3] not in descriptions:
-            descriptions[p[3]] = result
-        else:
-            descriptions[p[3]] += ', ' + result
+    if len(p) >= 5:
+        descriptions.update({p[3]: descriptions.get(p[3], []) + p[5]})
         p[0] = 'Okay.'
     elif len(p) == 4:
-        num = things.get(p[3], 0)
-        desc = descriptions.get(p[3], '')
-        p[0] = p[3]+'('+str(num)+')'+': '+desc
+        if p[3] == "help":
+            p[0] = helptext
+        else:
+            p[0] = "%s (%d): %s" % (p[3], things.get(p[3], 0),
+                                    ', '.join(descriptions.get(p[3], [])))
     else:
         p[0] = p[1]
 
 
 def p_up(p):
     '''up : THING PLUS PLUS'''
-    if p[1] not in things:
-        things[p[1]] = 1
-        descriptions[p[1]] = ''
-    else:
-        things[p[1]] += 1
+    things.update({p[1]: things.get(p[1], 0) + 1})
     p[0] = 'Done'
 
 
 def p_down(p):
     '''down : THING MINUS MINUS'''
-    if p[1] not in things:
-        things[p[1]] = -1
-        descriptions[p[1]] = ''
-    else:
-        things[p[1]] += -1
+    things.update({p[1]: things.get(p[1], 0) - 1})
     p[0] = 'Done'
 
 
 def p_thinglist(p):
-    """thinglist : THING thinglist 
+    """thinglist : THING thinglist
                  | THING"""
-    if len(p)<3:
-        p[0] = [p[1],]
+    if len(p) == 3:
+        p[0] = [p[1]].append(p[2])
     else:
-        p[0] = [p[1],] + p[2]
+        p[0] = [p[1]]
 
 
 def p_error(p):

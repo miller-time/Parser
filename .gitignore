@@ -1,2 +1,5 @@
-dev
+parser.out
+parsetab.py
+*.pyc
 *.egg-info
+dev

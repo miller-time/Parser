@@ -14,6 +14,7 @@ descriptions = {}
 helptext = ', '.join(("Usage: karmabot: help",
                       "karmabot: <thing>",
                       "karmabot: <thing> is <description>",
+                      "karmabot: forget <thing> is <description>",
                       "<thing>++",
                       "<thing>--",
                       ))
@@ -26,12 +27,24 @@ def p_statement(p):
 
 def p_expression(p):
     """expression : KARMABOT COLON HELP
+                  | KARMABOT COLON KARMABOT
                   | KARMABOT COLON THING
                   | KARMABOT COLON THING IS thinglist
+                  | KARMABOT COLON FORGET THING IS thinglist
                   | up
                   | down
                   """
-    if len(p) >= 5:
+    if p[3] == "forget" and p[5] == "is":
+        if p[4] in descriptions:
+            try:
+                i = descriptions[p[4]].index(p[6])
+                del descriptions[p[4]][i]
+                p[0] = 'Done.'
+            except ValueError:
+                p[0] = 'Description not found.'
+        else:
+            p[0] = 'No descriptions exist for %s.' % (p[4])
+    elif len(p) >= 5:
         descriptions.update({p[3]: descriptions.get(p[3], []) + [p[5]]})
         p[0] = 'Okay.'
     elif len(p) == 4:

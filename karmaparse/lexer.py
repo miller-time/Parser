@@ -10,6 +10,7 @@ reserved = {
     'karmabot': 'KARMABOT',
     'is': 'IS',
     'help': 'HELP',
+    'forget': 'FORGET',
     }
 
 tokens = (

@@ -39,7 +39,7 @@ def p_expression(p):
             p[0] = "%s (%d): %s" % (p[3], things.get(p[3], 0),
                                     ', '.join(descriptions.get(p[3], [])))
     else:
-      p[0] = p[1]
+        p[0] = p[1]
 
 
 def p_up(p):

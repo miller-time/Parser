@@ -9,6 +9,7 @@ from ply import lex
 reserved = {
     'karmabot': 'KARMABOT',
     'is': 'IS',
+    'help': 'HELP',
     }
 
 tokens = (

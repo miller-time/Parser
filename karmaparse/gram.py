@@ -8,6 +8,13 @@ __all__ = ['tokens', 'parser']
 
 
 things = {}
+descriptions = {}
+helptext = ', '.join(("Usage: karmabot: help",
+                      "karmabot: <thing>",
+                      "karmabot: <thing> is <description>",
+                      "<thing>++",
+                      "<thing>--",
+                      ))
 
 
 def p_statement(p):
@@ -16,54 +23,51 @@ def p_statement(p):
 
 
 def p_expression(p):
-    """expression : KARMABOT COLON THING
+    """expression : KARMABOT COLON HELP
+                  | KARMABOT COLON THING
                   | KARMABOT COLON THING IS thinglist
                   | up
                   | down
                   """
-    if len(p) > 4 and p[4] == "is":
-      print 'So you want',p[3],' to be described as:'
-      print ' '.join(p[5])
-      print 'Right?'
+    if len(p) >= 5:
+        descriptions.update({p[3]: descriptions.get(p[3], []) + p[5]})
+        p[0] = 'Okay.'
     elif len(p) == 4:
-      num = things.get(p[3], 0)
-      p[0] = p[3]+'('+str(num)+')'
-#    elif len(p) == 3:
-#      num = things.get(p[2], 0)
-#      p[0] = p[2]+'('+str(num)+')'
+        if p[3] == "help":
+            p[0] = helptext
+        else:
+            p[0] = "%s (%d): %s" % (p[3], things.get(p[3], 0),
+                                    ', '.join(descriptions.get(p[3], [])))
     else:
       p[0] = p[1]
 
 
 def p_up(p):
     '''up : THING PLUS PLUS'''
-    if p[1] not in things:
-      things[p[1]] = 1
-    else:
-      things[p[1]] += 1
+    things.update({p[1]: things.get(p[1], 0) + 1})
     p[0] = 'Done'
 
 
 def p_down(p):
     '''down : THING MINUS MINUS'''
-    if p[1] not in things:
-      things[p[1]] = -1
-    else:
-      things[p[1]] += -1
+    things.update({p[1]: things.get(p[1], 0) - 1})
     p[0] = 'Done'
 
 
 def p_thinglist(p):
-    """thinglist : THING thinglist 
+    """thinglist : THING thinglist
                  | THING"""
-    p[0] = [p[1], p[2]]
+    if len(p) == 3:
+        p[0] = [p[1]].append(p[2])
+    else:
+        p[0] = [p[1]]
 
 
 def p_error(p):
     if p:
         print("Syntax error at %r, %s ") % (p.value, p)
     else:
-        print("Syntax error at EOF")
+        print("Syntax error at EOF - for help try 'karmabot: help'")
 
 
 parser = yacc.yacc(debug=True)

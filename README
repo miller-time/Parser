@@ -33,12 +33,6 @@ And launch the test prompt:
 
     python gram.py
 
-Available commands:
-    thing++
-        add 1 karma to "thing"
-    thing-- 
-        subtract 1 karma from "thing"
-    karmabot: thing 
-        see current karma and description of "thing"
-    karmabot: thing is this and that 
-        add "this and that" to "thing"'s "description"
+To see available commands type this at the prompt:
+
+    karmabot: help

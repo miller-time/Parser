@@ -1,7 +1,6 @@
 import sys
-
+import eightball
 from ply import yacc
-
 from lexer import tokens
 
 __all__ = ['tokens', 'parser']

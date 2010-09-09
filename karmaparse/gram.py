@@ -9,6 +9,8 @@ __all__ = ['tokens', 'parser']
 
 things = {}
 descriptions = {}
+
+
 helptext = ', '.join(("Usage: karmabot: help",
                       "karmabot: <thing>",
                       "karmabot: <thing> is <description>",
@@ -30,7 +32,7 @@ def p_expression(p):
                   | down
                   """
     if len(p) >= 5:
-        descriptions.update({p[3]: descriptions.get(p[3], []) + p[5]})
+        descriptions.update({p[3]: descriptions.get(p[3], []) + [p[5]]})
         p[0] = 'Okay.'
     elif len(p) == 4:
         if p[3] == "help":
@@ -58,9 +60,9 @@ def p_thinglist(p):
     """thinglist : THING thinglist
                  | THING"""
     if len(p) == 3:
-        p[0] = [p[1]].append(p[2])
+        p[0] = ' '.join((p[1], p[2]))
     else:
-        p[0] = [p[1]]
+        p[0] = p[1]
 
 
 def p_error(p):
